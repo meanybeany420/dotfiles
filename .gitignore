@@ -1,0 +1,19 @@
+.config/nvim/.git/
+.config/nvim/colors.bak/
+.config/hypr/generated/
+.config/hypr/text.txt
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Machine-local overrides and private state
+*.local.lua
+*.local.sh
+.env
+.env.*
+*.pem
+*.key
+.zsh_history
+.bash_history
+.config/nvim/.dadbod_ui/

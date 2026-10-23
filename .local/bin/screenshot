@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+DIR="$HOME/Pictures/Screenshots"
+FILE="$DIR/$(date +'%Y-%m-%d_%H-%M-%S').png"
+
+mkdir -p "$DIR"
+
+case "$1" in
+  area)
+    grim -g "$(slurp)" "$FILE"
+    wl-copy < "$FILE"
+    ;;
+  full)
+    grim "$FILE"
+    wl-copy < "$FILE"
+    ;;
+  *)
+    echo "Usage: screenshot {area|full}"
+    exit 1
+    ;;
+esac
+
+notify-send "Screenshot saved" "$FILE"

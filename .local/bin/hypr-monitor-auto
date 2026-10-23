@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+# Configure connector names locally; none are tied to a particular machine.
+local_config="${XDG_CONFIG_HOME:-$HOME/.config}/hypr/displays.local.sh"
+[[ ! -f "$local_config" ]] || source "$local_config"
+: "${LAPTOP_OUTPUT:?Set LAPTOP_OUTPUT in displays.local.sh}"
+: "${EXTERNAL_OUTPUT:?Set EXTERNAL_OUTPUT in displays.local.sh}"
+if hyprctl -j monitors all | jq -e --arg output "$EXTERNAL_OUTPUT" 'any(.[]; .name == $output)' >/dev/null; then
+  hyprctl keyword monitor "$EXTERNAL_OUTPUT,preferred,0x0,1"
+  hyprctl keyword monitor "$LAPTOP_OUTPUT,disable"
+else
+  hyprctl keyword monitor "$LAPTOP_OUTPUT,preferred,0x0,1"
+fi

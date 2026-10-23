@@ -1,0 +1,46 @@
+
+background = #050505
+foreground = #d8cab8
+
+selection-background = #2a2420
+selection-foreground = #f2e6d8
+
+background = #050505
+background-opacity = 0.965
+background-blur = false
+
+background-image = ~/Downloads/ChatGPT Image May 17, 2026, 02_07_05 PM (1).png
+background-image-opacity = 0.05
+background-image-fit = cover
+background-image-position = center
+background-image-repeat = false
+
+cursor-color = #bb8861
+
+palette = 0=#050505
+palette = 1=#67413f
+palette = 2=#38433a
+palette = 3=#bb8861
+palette = 4=#5c6569
+palette = 5=#7a6d81
+palette = 6=#968b7a
+palette = 7=#d8cab8
+
+palette = 8=#2a2420
+palette = 9=#8b5652
+palette = 10=#DBA43B
+palette = 11=#d1a06f
+palette = 12=#738088
+palette = 13=#9685a0
+palette = 14=#b0a391
+palette = 15=#FFFFFF
+
+font-size = 15.5
+
+keybind = ctrl+k=scroll_page_up
+keybind = ctrl+j=scroll_page_down
+
+cursor-style = block
+cursor-style-blink = false
+confirm-close-surface = false
+mouse-hide-while-typing = true
