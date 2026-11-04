@@ -6,7 +6,7 @@
     "hyprland/workspaces"
   ],
   "modules-center": [
-    "clock"
+    "custom/focus"
   ],
   "modules-right": [
     "network",
@@ -23,14 +23,21 @@
     "format": "{}",
     "max-length": 60
   },
-  "clock": {
-    "format": "{:%a %d %b  %H:%M}"
+  "custom/focus": {
+    "exec": "\"$HOME/.local/bin/focus-mode\" --watch",
+    "return-type": "json",
+    "restart-interval": 5,
+    "exec-on-event": false,
+    "format": "{}",
+    "on-click": "\"$HOME/.local/bin/focus-mode\"",
+    "on-click-right": "\"$HOME/.local/bin/focus-mode\" stop",
+    "escape": true
   },
   "network": {
-    "format-wifi": "  Wi-Fi",
+    "format-wifi": "  {essid}",
     "format-ethernet": "󰈀  wired",
     "format-disconnected": "󰤮  offline",
-    "tooltip": false
+    "tooltip-format": "{ifname}: {ipaddr}"
   },
   "pulseaudio": {
     "format": "  {volume}%",

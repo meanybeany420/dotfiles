@@ -1,0 +1,23 @@
+-- OPTIONAL: copy to monitors.local.lua (untracked) and replace every placeholder.
+-- Without that file, monitors.lua keeps its generic preferred-mode fallback.
+-- Names/scales belong to YOUR hardware. Get names with `hyprctl monitors all`.
+-- status_paths must name actual external connector status files under /sys/class/drm;
+-- expand card* yourself once, not on every tick. No shell is spawned by the policy.
+-- Keep this module's result if you want to call apply(true) or inspect status().
+local display_policy = require("monitor_policy").setup({
+    laptop = "YOUR_INTERNAL_CONNECTOR",
+    external = "YOUR_EXTERNAL_CONNECTOR",
+    laptop_scale = 1,
+    external_scale = 1,
+    status_paths = { "/sys/class/drm/YOUR_CARD-EXTERNAL_CONNECTOR/status" },
+    -- Optional absolute path; default respects XDG_CONFIG_HOME:
+    -- mode_path = os.getenv("HOME") .. "/.config/hypr/monitor-mode",
+})
+-- Write one line to monitor-mode: auto, laptop, external, right, left, or mirror.
+-- Missing/invalid mode => auto, which keeps both screens (external to the right).
+-- ONLY explicit external mode disables the internal panel, after external activation.
+-- Unplug => internal panel. Failed preparation/settling => both independent, no
+-- destructive retries until mode/connection changes or display_policy.apply(true).
+-- This is an alternative to the existing displays.local.sh / hypr-monitor-auto
+-- helper; do not run both policies concurrently. That shell helper is unchanged.
+return display_policy

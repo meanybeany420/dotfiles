@@ -11,7 +11,8 @@
 require("monitors")
 
 hl.on("hyprland.start", function()
-	hl.exec_cmd(string.format("%q", (os.getenv("XDG_CONFIG_HOME") or (os.getenv("HOME") .. "/.config")) .. "/hypr/launch.sh"))
+	hl.exec_cmd([["${XDG_CONFIG_HOME:-$HOME/.config}/hypr/launch.sh"]])
+	hl.exec_cmd([["$HOME/.local/bin/clipboard-watch"]])
 end)
 
 ---------------------
@@ -22,7 +23,7 @@ end)
 local terminal = "ghostty"
 local fileManager = "dolphin"
 local menu = "rofi -show drun -show-icons"
-local browser = "brave"
+local browser = "firefox"
 local ss = "~/.local/bin/screenshot.lua area"
 -------------------
 ---- AUTOSTART ----
@@ -92,8 +93,24 @@ hl.config({
 		border_size = 4,
 
 		col = {
-			active_border = { colors = { "rgba(83, 25, 25, 0.8)", "rgba(46, 0, 0, 0.99)" }, angle = 45 },
-			inactive_border = "rgba(595959aa)",
+			active_border = {
+				colors = {
+					"rgb(ffffff)",
+					"rgb(000000)",
+					"rgb(000000)",
+					"rgb(000000)",
+					"rgb(000000)",
+					"rgb(000000)",
+					"rgb(000000)",
+					"rgb(000000)",
+					"rgb(000000)",
+					"rgb(000000)",
+					"rgb(000000)",
+					"rgb(000000)",
+				},
+				angle = 45,
+			},
+			inactive_border = "rgb(000000)",
 		},
 
 		-- Set to true to enable resizing windows by clicking and dragging on borders and gaps
@@ -144,7 +161,7 @@ hl.curve("quick", { type = "bezier", points = { { 0.15, 0 }, { 0.1, 1 } } })
 hl.curve("easy", { type = "spring", mass = 1, stiffness = 71.2633, dampening = 15.8273644 })
 
 hl.animation({ leaf = "global", enabled = true, speed = 10, bezier = "default" })
-hl.animation({ leaf = "border", enabled = true, speed = 5.39, bezier = "easeOutQuint" })
+hl.animation({ leaf = "border", enabled = false })
 hl.animation({ leaf = "windows", enabled = true, speed = 4.79, spring = "easy" })
 hl.animation({ leaf = "windowsIn", enabled = true, speed = 4.1, spring = "easy", style = "popin 87%" })
 hl.animation({ leaf = "windowsOut", enabled = true, speed = 1.49, bezier = "linear", style = "popin 87%" })
@@ -229,7 +246,7 @@ hl.config({
 		sensitivity = 0, -- -1.0 - 1.0, 0 means no modification.
 
 		touchpad = {
-			natural_scroll = false,
+			natural_scroll = true,
 		},
 	},
 })
@@ -258,6 +275,7 @@ local secondMod = "ALT + CTRL "
 hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(menu))
 hl.bind(mainMod .. " + RETURN", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + b", hl.dsp.exec_cmd(browser))
+hl.bind("SUPER + V", hl.dsp.exec_cmd([["$HOME/.local/bin/clipboard-stack"]]))
 
 -- Example binds, see https://wiki.hypr.land/Configuring/Basics/Binds/ for more
 

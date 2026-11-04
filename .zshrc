@@ -1,6 +1,11 @@
+typeset -U path PATH
+path=("$HOME/.local/bin" $path)
+
 #Powerlevel10k
-source ~/.powerlevel10k/powerlevel10k.zsh-theme
-export LS_COLORS="$(cat ~/.ls_colors)"
+[[ ! -r "$HOME/.powerlevel10k/powerlevel10k.zsh-theme" ]] || source "$HOME/.powerlevel10k/powerlevel10k.zsh-theme"
+if [[ -r "$HOME/.ls_colors" ]]; then
+  export LS_COLORS="$(<"$HOME/.ls_colors")"
+fi
 # History
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
@@ -12,15 +17,17 @@ autoload -Uz compinit
 compinit
 
 # Aliases
-alias cat='bat'
-alias ls='eza --icons --group-directories-first'
+if (( $+commands[bat] )); then alias cat='bat'; fi
+if (( $+commands[eza] )); then alias ls='eza --icons --group-directories-first'; fi
 # Navigation
-eval "$(zoxide init zsh)"
-alias cd='z'
+if (( $+commands[zoxide] )); then
+  eval "$(zoxide init zsh)"
+  alias cd='z'
+fi
 
 # FZF
-source /usr/share/fzf/key-bindings.zsh 2>/dev/null
-source /usr/share/fzf/completion.zsh 2>/dev/null
+[[ ! -r /usr/share/fzf/key-bindings.zsh ]] || source /usr/share/fzf/key-bindings.zsh
+[[ ! -r /usr/share/fzf/completion.zsh ]] || source /usr/share/fzf/completion.zsh
 
 export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS \
   --color=fg:#afa9a9,fg+:#000000,bg:#2d1e1e,bg+:#723a3a \
@@ -58,10 +65,14 @@ ZSH_HIGHLIGHT_STYLES+=(precommand 'fg=#604369,bold')
 ZSH_HIGHLIGHT_STYLES+=(command 'fg=#915651')
 ZSH_HIGHLIGHT_STYLES+=(builtin 'fg=#915651')
 ZSH_HIGHLIGHT_STYLES+=(alias 'fg=#915651')
-ZSH_HIGHLIGHT_STYLES+=(path 'fg=##999050')
-ZSH_HIGHLIGHT_STYLES+=(unknown-token 'fg=##b50f04')
+ZSH_HIGHLIGHT_STYLES+=(path 'fg=#999050')
+ZSH_HIGHLIGHT_STYLES+=(unknown-token 'fg=#b50f04')
 
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+[[ ! -r /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] || source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Start a chat with a Hermes profile.
+alias cyberbill='hermes -p cyberbill chat'
+alias writerbob='hermes -p writerbob chat'

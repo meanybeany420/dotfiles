@@ -6,11 +6,10 @@ selection-background = #2a2420
 selection-foreground = #f2e6d8
 
 background = #050505
-background-opacity = 0.965
+background-opacity = 0.90
 background-blur = false
 
-background-image = ~/Downloads/ChatGPT Image May 17, 2026, 02_07_05 PM (1).png
-background-image-opacity = 0.05
+background-image-opacity = 0.51
 background-image-fit = cover
 background-image-position = center
 background-image-repeat = false

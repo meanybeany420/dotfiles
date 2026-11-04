@@ -1,0 +1,40 @@
+name: Check configs
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      TMPDIR: ${{ runner.temp }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.14'
+      - name: Install validation tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends lua5.4 zsh g++ tmux jq
+      - name: Install verified Neovim release for isolated tests
+        run: |
+          curl --fail --location --retry 3 \
+            https://github.com/neovim/neovim/releases/download/v0.12.6/nvim-linux-x86_64.tar.gz \
+            --output "$RUNNER_TEMP/nvim.tar.gz"
+          printf '%s  %s\n' '474430d53e6264f6d6dd18db42d6dc9df3a1b56ca9e88a325bbf860e1a811d87' "$RUNNER_TEMP/nvim.tar.gz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/nvim.tar.gz" -C "$RUNNER_TEMP"
+          printf '%s\n' "$RUNNER_TEMP/nvim-linux-x86_64/bin" >> "$GITHUB_PATH"
+      - name: Check syntax and publication safety
+        run: python3 scripts/check_configs.py
+      - name: Run isolated regression tests
+        run: python3 -m unittest discover -s tests -v
+      - name: Check whitespace
+        run: git diff --check

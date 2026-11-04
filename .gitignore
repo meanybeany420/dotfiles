@@ -2,18 +2,39 @@
 .config/nvim/colors.bak/
 .config/hypr/generated/
 .config/hypr/text.txt
-*.swp
-*.swo
-*~
-.DS_Store
 
-# Machine-local overrides and private state
+# Local overrides and generated display selections.
 *.local.lua
 *.local.sh
+*.local.json
+.config/hypr/monitor-mode
+.config/hypr/system-tools-displays.json
+
+# Credentials, histories, application state and browser profiles.
 .env
 .env.*
 *.pem
 *.key
+*.p12
+*.pfx
+**/.ssh/
+.gnupg/
 .zsh_history
 .bash_history
 .config/nvim/.dadbod_ui/
+.config/fish/fish_variables
+.local/state/
+.mozilla/
+.config/chromium/
+.config/BraveSoftware/
+
+# Editor recovery files, local backups and caches.
+*.sw?
+*.bak
+*.before-*
+*~
+__pycache__/
+*.py[cod]
+.cache/
+node_modules/
+.DS_Store

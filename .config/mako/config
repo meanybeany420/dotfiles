@@ -6,3 +6,6 @@ border-size=2
 border-radius=8
 padding=10
 default-timeout=4000
+
+[mode=focus-timer]
+invisible=1

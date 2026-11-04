@@ -6,7 +6,8 @@ pkill mako 2>/dev/null
 
 sleep 0.2
 
-hyprpaper -c "$HOME/.config/hypr/hyprpaper.conf" &
-waybar -c "$HOME/.config/waybar/config.jsonc" -s "$HOME/.config/waybar/style.css" &
-mako -c "$HOME/.config/mako/config" &
-hypridle -c "$HOME/.config/hypr/hypridle.conf" &
+config_home=${XDG_CONFIG_HOME:-"$HOME/.config"}
+hyprpaper -c "$config_home/hypr/hyprpaper.conf" &
+waybar -c "$config_home/waybar/config.jsonc" -s "$config_home/waybar/style.css" &
+mako -c "$config_home/mako/config" &
+hypridle -c "$config_home/hypr/hypridle.conf" &
