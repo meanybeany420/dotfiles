@@ -65,6 +65,14 @@ Tests use isolated homes, a stub compositor interface and a fake Ghostty where n
 
 Compare the tracked files with your live configuration, review each difference, then copy only the intended changes. Preserve portable paths and local overrides instead of copying an entire `.config` directory. Never include editor recovery files, browser profiles, clipboard history or private keys.
 
+Before committing an update, check both unstaged and staged changes from the repository root:
+
+```sh
+git status --short
+git diff
+git diff --cached
+```
+
 The public history intentionally starts with a portable snapshot. Do not merge an older, unsanitised checkout back into the public branch.
 
 The bundled Neovim starter license is retained. Third-party projects keep their respective licenses; no repository-wide license has been added.
