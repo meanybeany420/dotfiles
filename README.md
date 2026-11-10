@@ -1,55 +1,39 @@
-# Linux development environment
+# Dotfiles
 
-Personal Arch Linux configurations for Hyprland, Neovim, Ghostty, tmux, Zsh, Waybar and Rofi.
+Configs from my Arch / Hyprland setup.
 
-This is a curated configuration snapshot, not a complete home-directory backup or an automatic installer. Machine-specific settings, credentials, histories and generated state stay local.
+Hyprland, Neovim, Ghostty, Alacritty, tmux, Zsh, Waybar, mako and rofi. Mostly here so I can keep track of them and reuse bits on another machine.
 
-## What's included
-
-| Component | Configuration |
-| --- | --- |
-| Desktop | Hyprland Lua configuration, Hypridle, Hyprlock and Hyprpaper |
-| Editor | LazyVim setup, custom colours, Oil navigation and C++ build/run commands |
-| Shell | Zsh, Powerlevel10k, fzf, zoxide and command aliases |
-| Terminals | Ghostty, Alacritty and tmux session persistence |
-| Panels | Waybar focus-timer integration and Mako notification rules |
-| Launcher | Rofi launcher and a compact audio-input theme |
-| Utilities | Lua screenshots and a Bash display-switching helper |
-
-## Use selected configs
+## Using them
 
 ```sh
 git clone https://github.com/meanybeany420/dotfiles.git
 cd dotfiles
 ```
 
-1. Read the configuration and [dependencies](docs/dependencies.md) for the components you want.
-2. Back up the corresponding files in your home directory. Close editors that may save an older copy over your changes.
-3. Copy only the selected files into their matching paths under `$HOME`. Keep executable permissions on `.local/bin/` and shell scripts.
-4. Review startup applications, keyboard layout, keybindings, fonts and monitor settings before starting a new session.
+Take the bits you want, read them first and back up whatever you're replacing. There isn't an installer, and copying the whole lot over your home directory is a bad idea.
 
-The desktop targets Hyprland 0.57's Lua configuration API; it is not a configuration for older releases that only accept `hyprland.conf`. Neovim regression checks use version 0.12.6. Other distributions and older versions are not tested.
+The paths mirror `$HOME`. Keep executable permissions on scripts, and check keybindings, startup apps, fonts and monitor settings before starting a session. See [dependencies](docs/dependencies.md) for packages and setup.
 
-## Local settings
+## Things you'll probably want to change
 
-- The default monitor configuration keeps automatic output selection. Put your own monitor rules in `~/.config/hypr/monitors.local.lua`; that file is ignored by Git. An optional [staged monitor policy](docs/monitors.md) provides verified transitions, mirroring and unplug recovery after you configure it for your hardware.
-- The standalone `hypr-monitor-auto` helper reads `LAPTOP_OUTPUT` and `EXTERNAL_OUTPUT` from `~/.config/hypr/displays.local.sh`. Choose one display-management approach rather than running conflicting rules.
-- Supply your own wallpaper at `~/.local/share/backgrounds/wallpaper.png`, or edit the wallpaper configuration. Personal wallpaper images are not bundled.
-- The focus timer and clipboard commands come from [system-tools](https://github.com/meanybeany420/system-tools). Install that separately before enabling the related startup commands and keybindings. This repository does not duplicate those scripts.
-- Fonts and cursor themes are external dependencies. Install them or change the font/theme names in the configs.
-- Hermes shell aliases are optional shortcuts; no Hermes profiles, credentials or conversation data are included.
+- The desktop uses Hyprland 0.57's Lua config, not the older `hyprland.conf` format.
+- Put monitor overrides in `~/.config/hypr/monitors.local.lua`. There's more on the optional monitor policy in [monitor setup](docs/monitors.md). The separate `hypr-monitor-auto` helper uses `~/.config/hypr/displays.local.sh`; pick one approach rather than running both.
+- Add your own wallpaper at `~/.local/share/backgrounds/wallpaper.png`, or change the path.
+- Install the fonts and cursor theme, or swap the names for ones you have.
+- The focus timer and clipboard commands come from [system-tools](https://github.com/meanybeany420/system-tools), not this repo. Install those before enabling their bindings or startup commands.
 
-## Neovim C++ commands
+## Neovim bits
 
-- `:Cbuild` compiles the `.cpp` files beside the current file with `g++` and C++20.
-- `:Crun` runs the last successful build in a Ghostty runner window.
-- `:Cgo` builds and runs.
+`:Cbuild` builds the `.cpp` files beside the current file with g++ and C++20. `:Crun` opens the last successful build in Ghostty, and `:Cgo` does both.
 
-These commands are for small, flat C++ projects, not a replacement for CMake. Building saves modified buffers through `:wall`. A failed build preserves the last successful executable. Builds are temporary and scoped to the current Neovim session; the FIFO runner does not support newline-containing paths. Arrow keys are deliberately disabled in normal, insert and visual modes; navigation uses Vim keys.
+These are for small, flat projects. Building saves modified buffers with `:wall`; a failed build keeps the previous executable. Builds last for the Neovim session, and the runner doesn't handle paths containing newlines.
 
-## Check changes
+Arrow keys are disabled in normal, insert and visual modes. Change that if it's not your thing.
 
-Requires Python 3.11+, Git, Bash, Zsh and Lua (`luac`). The isolated Neovim regression tests also require Neovim and `g++`.
+## Checks
+
+Needs Python 3.11+, Git, Bash, Zsh and Lua (`luac`). Editor tests also need Neovim and g++; the regression setup uses Neovim 0.12.6.
 
 ```sh
 python3 scripts/check_configs.py
@@ -57,15 +41,9 @@ python3 -m unittest discover -s tests -v
 git diff --check
 ```
 
-The checker parses Lua, shell, JSON/JSONC and TOML files and flags common credential patterns and literal user-home paths. It does not start Hyprland, apply monitor changes or load your normal Neovim plugins. Pattern scanning is a guardrail, not a guarantee that a file is safe to publish.
+These check syntax and isolated behaviour, not your actual desktop or hardware. Review changes before copying them back, and keep private keys, history, clipboard data and other personal state out of Git. Don't merge an older unsanitised checkout into the public history.
 
-Tests use isolated homes, a stub compositor interface and a fake Ghostty where needed. They do not prove that every desktop feature works on other hardware. GitHub Actions runs the checks before changes are merged or after a push.
-
-## Updating this snapshot
-
-Compare the tracked files with your live configuration, review each difference, then copy only the intended changes. Preserve portable paths and local overrides instead of copying an entire `.config` directory. Never include editor recovery files, browser profiles, clipboard history or private keys.
-
-Before committing an update, check both unstaged and staged changes from the repository root:
+Before committing, check what's changed and what's staged:
 
 ```sh
 git status --short
@@ -73,6 +51,4 @@ git diff
 git diff --cached
 ```
 
-The public history intentionally starts with a portable snapshot. Do not merge an older, unsanitised checkout back into the public branch.
-
-The bundled Neovim starter license is retained. Third-party projects keep their respective licenses; no repository-wide license has been added.
+The bundled Neovim starter licence is kept in place. Other third-party projects keep their own licences; there's no repo-wide licence.
